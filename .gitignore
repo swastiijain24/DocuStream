@@ -396,3 +396,9 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# DocuStream
+.env
+.venv/
+venv/
+faiss_index/
