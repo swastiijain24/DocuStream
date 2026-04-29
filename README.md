@@ -2,9 +2,6 @@
 
 DocuStream is a Streamlit-based multi-document Q&A application that lets you upload PDF files and ask natural-language questions grounded in document content.
 
-Repository: https://github.com/swastiijain24/DocuStream
-Maintainer: Swasti Jain
-
 ## Overview
 
 DocuStream combines retrieval-augmented generation (RAG) with a clean Streamlit interface:
