@@ -73,7 +73,3 @@ streamlit run chatapp.py
 
 - The FAISS index is saved in `faiss_index/` after document processing.
 - If no key is found, the app stops and shows a configuration error.
-
-## License
-
-This project is distributed under the MIT License. See LICENSE for details.
