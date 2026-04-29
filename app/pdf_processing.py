@@ -1,9 +1,9 @@
 from PyPDF2 import PdfReader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
 def extract_pdf_text(pdf_docs) -> str:
-    """Extract text from one or more uploaded PDFs."""
+    """Extracting text from one or more uploaded PDFs."""
     text = ""
     for pdf in pdf_docs:
         reader = PdfReader(pdf)
@@ -14,5 +14,5 @@ def extract_pdf_text(pdf_docs) -> str:
 
 
 def split_text(text: str):
-    splitter = RecursiveCharacterTextSplitter(chunk_size=50000, chunk_overlap=1000)
+    splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=200)
     return splitter.split_text(text)

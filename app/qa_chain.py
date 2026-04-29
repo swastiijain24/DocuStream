@@ -1,5 +1,5 @@
-from langchain.chains.question_answering import load_qa_chain
-from langchain.prompts import PromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import PromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 from app.config import CHAT_MODEL
@@ -26,13 +26,13 @@ def build_qa_chain():
         template=PROMPT_TEMPLATE,
         input_variables=["context", "question"],
     )
-    return load_qa_chain(model, chain_type="stuff", prompt=prompt)
+    return prompt | model | StrOutputParser()
 
 
 def answer_question(question: str, docs):
     chain = build_qa_chain()
-    response = chain(
-        {"input_documents": docs, "question": question},
-        return_only_outputs=True,
+    context = "\n\n".join(
+        doc.page_content if hasattr(doc, "page_content") else str(doc)
+        for doc in docs
     )
-    return response["output_text"]
+    return chain.invoke({"context": context, "question": question})
