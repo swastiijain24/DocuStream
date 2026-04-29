@@ -44,26 +44,19 @@ DocuStream combines retrieval-augmented generation (RAG) with a clean Streamlit 
 
 ## Setup
 
-1. Clone the repository:
-
-```bash
-git clone https://github.com/swastiijain24/DocuStream.git
-cd DocuStream
-```
-
-2. Install dependencies:
+1. Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Create a `.env` file at the project root:
+2. Create a `.env` file at the project root:
 
 ```env
 GOOGLE_API_KEY=your_google_api_key
 ```
 
-4. Run the app:
+3. Run the app:
 
 ```bash
 streamlit run chatapp.py
