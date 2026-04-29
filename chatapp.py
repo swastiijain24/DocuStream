@@ -17,7 +17,6 @@ def process_uploaded_docs(pdf_docs) -> None:
 
 def render_sidebar() -> None:
     with st.sidebar:
-        st.image("img/Robot.jpg")
         st.write("---")
         st.title("Document Ingestion")
         pdf_docs = st.file_uploader(

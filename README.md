@@ -27,8 +27,6 @@ DocuStream combines retrieval-augmented generation (RAG) with a clean Streamlit 
 |   |-- vector_store.py
 |-- chatapp.py
 |-- requirements.txt
-|-- img/
-|-- docs/
 ```
 
 ## How It Works
