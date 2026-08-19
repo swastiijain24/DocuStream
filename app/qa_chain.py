@@ -1,8 +1,9 @@
+import streamlit as st
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-from app.config import CHAT_MODEL
+from app.config import CHAT_MODEL, configure_environment
 
 
 PROMPT_TEMPLATE = """
@@ -20,8 +21,15 @@ Answer:
 """
 
 
-def build_qa_chain():
-    model = ChatGoogleGenerativeAI(model=CHAT_MODEL, temperature=0.3)
+@st.cache_resource(show_spinner=False)
+def _build_qa_chain():
+    """Build the LLM chain once and reuse it for all questions."""
+    api_key = configure_environment()
+    model = ChatGoogleGenerativeAI(
+        model=CHAT_MODEL,
+        temperature=0.3,
+        google_api_key=api_key,
+    )
     prompt = PromptTemplate(
         template=PROMPT_TEMPLATE,
         input_variables=["context", "question"],
@@ -30,7 +38,7 @@ def build_qa_chain():
 
 
 def answer_question(question: str, docs):
-    chain = build_qa_chain()
+    chain = _build_qa_chain()
     context = "\n\n".join(
         doc.page_content if hasattr(doc, "page_content") else str(doc)
         for doc in docs

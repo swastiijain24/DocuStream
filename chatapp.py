@@ -6,6 +6,16 @@ from app.qa_chain import answer_question
 from app.vector_store import build_and_save_vector_store, similarity_search
 
 
+def _is_quota_error(error_text: str) -> bool:
+    normalized = error_text.lower()
+    return (
+        "resource_exhausted" in normalized
+        or "quota exceeded" in normalized
+        or "429" in normalized
+        or "rate limit" in normalized
+    )
+
+
 def process_uploaded_docs(pdf_docs) -> None:
     raw_text = extract_pdf_text(pdf_docs)
     if not raw_text.strip():
@@ -46,8 +56,22 @@ def render_main_panel() -> None:
         st.info("Upload and process documents first.")
         return
 
-    docs = similarity_search(user_question)
-    answer = answer_question(user_question, docs)
+    try:
+        docs = similarity_search(user_question)
+        answer = answer_question(user_question, docs)
+    except Exception as exc:
+        error_text = str(exc)
+        if _is_quota_error(error_text):
+            st.error("Gemini API quota exceeded. Please try again in about a minute.")
+            st.info(
+                "If this keeps happening, check your Gemini API quotas/billing, "
+                "or switch to a key/project with available quota."
+            )
+            return
+
+        st.error(f"Request failed: {error_text}")
+        return
+
     st.write("Answer:")
     st.write(answer)
 
